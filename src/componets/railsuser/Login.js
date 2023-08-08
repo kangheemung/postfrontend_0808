@@ -1,7 +1,7 @@
 import React from 'react'
 import React, { useState } from 'react'
 
-export default function () {
+export default function (props) {
 	const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -10,6 +10,31 @@ export default function () {
     const handleSubmit = (event) => {
         console.log("イベント発火")
         event.preventDefault()
+        const handleSubmit = (event) => {
+            axios.post("http://52.195.43.116:3000/signup",
+                {
+                    user: {
+                        name: name,
+                        email: email,
+                        password: password,
+                        password_confirmation: passwordConfirmation
+                    }
+                },
+                { withCredentials: true }
+            ).then(response => {
+    
+                // 追加
+                if (response.data.status === 'created') {
+                    props.handleSuccessfulAuthentication(response.data)
+                }
+    
+            }).catch(error => {
+                console.log("registration error", error)
+            })
+    
+    
+            event.preventDefault()
+        }
     }
 
     return (
@@ -21,7 +46,7 @@ export default function () {
 			<input
                     type="name"
                     name="name"
-                    placeholder="メールアドレス"
+                    placeholder="名前"
                     value={name}
                     onChange={event => setEmail(event.target.value)}
                 />

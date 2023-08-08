@@ -1,7 +1,9 @@
 import './App.css';
 
 import React, { useState } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
+
+import { BrowserRouter,Routes, Route } from 'react-router-dom';
 import Modal from './componets/Modal';
 import Home from './componets/Home';
 import Dashboard from './componets/Dashboard';
@@ -24,7 +26,7 @@ function App() {
       <Post onContact={toggleModalHandler} />
       {showModal && <Modal onClose={toggleModalHandler} />}
       <BrowserRouter>
-        <Switch>
+        <Routes>
         <Route
             exact path={"/"}
             render={props => (
@@ -39,7 +41,7 @@ function App() {
             )}
           />
           <Route exact path={'/posts/new'} component={Post} />
-        </Switch>
+        </Routes>
       </BrowserRouter>
     </main>
   );

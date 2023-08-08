@@ -1,5 +1,5 @@
 import React from 'react'
-import SignIn from './componets/railsuser/SignIn';
+import SignIn from './railsuser/SignIn';
 export default function Home(props) {
     return (
         <div>

@@ -31,7 +31,19 @@ import { NavLink } from 'react-router-dom'
                 fontWeight: "bold",
                 color: "red"
               }}
-              to="/index"
+              to="users/new"
+            >
+               SignIN
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              exact
+              activeStyle={{
+                fontWeight: "bold",
+                color: "red"
+              }}
+              to="posts/index"
             >
                 Postindex--
             </NavLink>

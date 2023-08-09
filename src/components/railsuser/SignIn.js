@@ -10,7 +10,7 @@ export default function (props) {
         console.log("イベント発火")
         event.preventDefault()
         const handleSubmit = (event) => {
-            axios.post("http://52.195.43.116:3000/signup",
+            axios.post("http://52.195.43.116:3000/signin",
                 {
                     user: {
                         name: name,
@@ -42,20 +42,28 @@ export default function (props) {
 
            {/* onSubmit、onChangeイベントを追加 */}
             <form onSubmit={handleSubmit}>
+            <div>
+            <label>name:</label>
 			<input
                     type="name"
                     name="name"
                     placeholder="名前"
                     value={name}
-                    onChange={event => setEmail(event.target.value)}
+                    onChange={event => setName(event.target.value)}
                 />
+            </div>
+            <div>
+                 <label>email:</label>
                 <input
                     type="email"
                     name="email"
                     placeholder="メールアドレス"
                     value={email}
                     onChange={event => setEmail(event.target.value)}
-                />
+                /> 
+            </div>
+            <div>
+                <label>password:</label>
                 <input
                     type="password"
                     name="password"
@@ -63,6 +71,9 @@ export default function (props) {
                     value={password}
                     onChange={event => setPassword(event.target.value)}
                 />
+            </div>
+            <div>
+                 <label>password_confirmation:</label>
                 <input
                     type="password"
                     name="password_confirmation"
@@ -70,7 +81,7 @@ export default function (props) {
                     value={passwordConfirmation}
                     onChange={event => setPasswordConfirmation(event.target.value)}
                 />
-
+            </div>
                 <button type="submit">登録</button>
             </form>
         </div>

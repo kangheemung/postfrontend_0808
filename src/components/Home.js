@@ -11,7 +11,7 @@ export default function Home(props) {
 
      // handleLogoutClickイベントハンドラ
      const handleLogoutClick = () => {
-        axios.delete("http://localhost:3001/logout", { withCredentials: true })
+        axios.delete("http://52.195.43.116/logout", { withCredentials: true })
             .then(response => {
                 props.handleLogout()
             }).catch(error => console.log("ログアウトエラー", error))

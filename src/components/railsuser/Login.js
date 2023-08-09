@@ -8,33 +8,27 @@ export default function Login(props) {
 
     const handleSubmit = (event) => {
         console.log("イベント発火")
-        event.preventDefault()
-        const handleSubmit = (event) => {
+        event.preventDefault();
+        
             axios.post("http://52.195.43.116:3000/login",
                 {
                     user: {
-                     
                         email: email,
                         password: password
-                       
                     }
                 },
                 { withCredentials: true }
-            ).then(response => {
-    
+            )
+            .then(response => {
                 // 追加
                 if (response.data.logged_in) {
                     props.handleSuccessfulAuthentication(response.data)
                 }
-    
-            }).catch(error => {
-                console.log("registration error", error)
             })
-    
-    
-            event.preventDefault()
-        }
-    }
+            .catch(error => {
+                console.log("registration error", error)
+            });
+    };
 
     return (
         <div>

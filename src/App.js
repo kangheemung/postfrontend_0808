@@ -8,6 +8,7 @@ import Dashboard from './components/Dashboard';
 import Post from './components/Post';
 import Hellow from './components/Hellow';
 import SignIn from './components/railsuser/SignIn';
+import Login from './components/railsuser/Login';
 import './App.css';
 
 function App() {
@@ -54,9 +55,7 @@ function App() {
       <Header/>
       <h1>ここはAPPの場所</h1>
       <Hellow />
-      <Post onContact={toggleModalHandler} />
-      {showModal && <Modal onClose={toggleModalHandler} />}
-     
+      
         <Routes>
           <Route
             exact path={"/"}
@@ -71,8 +70,12 @@ function App() {
             element={<Dashboard loggedInStatus={loggedInStatus} />}
           />
           <Route
-            path="/users/new"
+            path="/signup"
             element={<SignIn />}
+          />
+           <Route
+            path="/logged_in"
+            element={<Login />}
           />
           <Route
             exact path={'/posts/new'}

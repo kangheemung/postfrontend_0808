@@ -1,12 +1,164 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+ body{
+    background-color:#DBE5E6;
+    object-fit: cover;
+    color: #004A54;
+    font-family: 'Mali', cursive;
+    min-height: 100vh;
+    font-size: large;
 }
 
+.notification:not(:last-child){
+    margin-bottom:0;
+}
+header{
+    color: #DBE5E6;
+    background-color:  #004A54; 
+    text-align: left;
+    font-family: 'Mali', cursive; 
+    padding-top: 5%; 
+    padding-bottom: 5%;
+}
+.header1 a { 
+    color: #DBE5E6;
+    text-decoration: none;
+    margin-right: 2%;
+}
+.header1{
+    color: #DBE5E6;
+    background-color:  #004A54; 
+    text-align: left;
+    font-family: 'Mali', cursive; 
+    padding-top: 5%;
+    padding-bottom: 5%; 
+    display: flex;
+    width: 1000px;
+ }
+ .s_header{
+    font-size: x-large;    
+    color: whitesmoke;
+}
+.s_h_1{ 
+    color: whitesmoke;
+    font-weight: bolder;  
+    font-size:larger;
+    margin-left: 5%;
+    text-decoration:none;
+    display: flex; 
+}
+
+li {
+    list-style: none;
+    display: flex;
+  }
+.menu{
+    margin-right :5%;
+    margin-left :5%;
+    margin-top: 5%
+}
+.menu_icon1{
+    fill:#DBE5E6;
+}
+
+.header1{
+  color: #DBE5E6;
+  background-color:  #004A54; 
+  text-align: left;
+  font-family: 'Mali', cursive; 
+  padding-top: 5%;
+  padding-bottom: 5%; 
+  display: flex;
+  
+}
+.s_header{
+  font-size: x-large;    
+  color: whitesmoke;
+}
+.s_h_1{ 
+  color: whitesmoke;
+  font-weight: bolder;  
+  font-size:larger;
+  margin-left: 5%;
+  text-decoration:none;
+  display: flex; 
+}
+
+li {
+  list-style: none;
+  display: flex;
+}
+
+.signup_body{
+  align-items: center;
+  background-color:whitesmoke;
+  padding-top: 1%;
+  padding-bottom: 5%;
+  border-radius: 10px;
+  text-align: center;
+  text-decoration: none;
+}
+.signup_body a{
+  text-align: center;
+  text-decoration: none;  
+}
+.signup_body h1{
+  text-align: center;
+  text-decoration: none;  
+}
+.signup_body p{
+ 
+  text-align: center;
+  text-decoration: none;  
+}
+
+.Post_index{
+    width: 100%;
+    display: flex;
+  
+}
+
+.button{
+  background-color: #004A54;
+  width: 25%;
+  height: 10%;
+  margin-top:2% ;
+  margin-bottom: 10%;
+  padding-top: 3%;
+  padding-bottom: 3%;
+  border: solid 1px;
+  font-size: medium;
+  border-radius: 5%;
+  color:whitesmoke;
+}
+.login{
+  margin-bottom: 5%;
+  text-align: center;
+}
+.name_box{
+  width: 50%;
+  margin-top: 3%;   
+}
+.name{
+  width:20%;
+  margin-top: 3%; 
+}
+.bottom-text2 p{
+  font-size: x-small;
+}
+.sign_btn{
+  text-align: center;
+  
+ }
+.gender_box{
+  margin-top: 3%;
+}
+
+.user_info{
+  text-align: center;
+}
+.user_info_left{
+  width: 70%;
+  margin:  0 auto; 
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

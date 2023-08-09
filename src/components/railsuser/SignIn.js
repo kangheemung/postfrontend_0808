@@ -1,89 +1,90 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-export default function (props) {
-	const [name, setName] = useState("")
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [passwordConfirmation, setPasswordConfirmation] = useState("")
+import React, { useState } from "react";
+import axios from "axios";
 
-    const handleSubmit = (event) => {
-        console.log("イベント発火")
-        event.preventDefault()
-        const handleSubmit = (event) => {
-            axios.post("http://52.195.43.116:3000/signin",
-                {
-                    user: {
-                        name: name,
-                        email: email,
-                        password: password,
-                        password_confirmation: passwordConfirmation
-                    }
-                },
-                { withCredentials: true }
-            ).then(response => {
-    
-                // 追加
-                if (response.data.status === 'created') {
-                    props.handleSuccessfulAuthentication(response.data)
-                }
-    
-            }).catch(error => {
-                console.log("registration error", error)
-            })
-    
-    
-            event.preventDefault()
+const SignIn = () => {
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    password_confirmation: ""
+  });
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setData({
+      ...data,
+      [e.target.name]: value
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const userData = {
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      password_confirmation: data.password_confirmation
+    };
+    axios.post(
+      "http://52.195.43.116:8080/signup",
+      userData,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+         
         }
-    }
-
-    return (
-        <div>
-           <p>新規登録</p>
-
-           {/* onSubmit、onChangeイベントを追加 */}
-            <form onSubmit={handleSubmit}>
-            <div>
-            <label>name:</label>
-			<input
-                    type="name"
-                    name="name"
-                    placeholder="名前"
-                    value={name}
-                    onChange={event => setName(event.target.value)}
-                />
-            </div>
-            <div>
-                 <label>email:</label>
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="メールアドレス"
-                    value={email}
-                    onChange={event => setEmail(event.target.value)}
-                /> 
-            </div>
-            <div>
-                <label>password:</label>
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="パスワード"
-                    value={password}
-                    onChange={event => setPassword(event.target.value)}
-                />
-            </div>
-            <div>
-                 <label>password_confirmation:</label>
-                <input
-                    type="password"
-                    name="password_confirmation"
-                    placeholder="確認用パスワード"
-                    value={passwordConfirmation}
-                    onChange={event => setPasswordConfirmation(event.target.value)}
-                />
-            </div>
-                <button type="submit">登録</button>
-            </form>
-        </div>
+      }
     )
-}
+      .then((response) => {
+        console.log(response.status, response.data.token);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  return (
+    <div>
+      <h1>Login Account</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="name">Name</label>
+          <input
+            type="name"
+            name="name"
+            value={data.name}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            name="email"
+            value={data.email}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            name="password"
+            value={data.password}
+            onChange={handleChange}
+          />
+          <label htmlFor="password_confirmation">Password Confirmation</label>
+          <input
+            type="password"
+            name="password_confirmation"
+            value={data.password_confirmation}
+            onChange={handleChange}
+          />
+          <button type="submit">Sign_in</button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default SignIn;

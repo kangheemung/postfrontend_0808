@@ -31,28 +31,32 @@ export default function Login(props) {
     };
 
     return (
-        <div>
+        <div  className= "signup_body">
             <p>ログイン</p>
 
            {/* onSubmit、onChangeイベントを追加 */}
             <form onSubmit={handleSubmit}>
-			
+			<div >
                 <input
+                className="name_box"
                     type="email"
                     name="email"
                     placeholder="メールアドレス"
                     value={email}
                     onChange={event => setEmail(event.target.value)}
                 />
+            </div>
+            <div>
                 <input
+                className="name_box"
                     type="password"
                     name="password"
                     placeholder="パスワード"
                     value={password}
                     onChange={event => setPassword(event.target.value)}
                 />
-
-                <button type="submit">登録</button>
+            </div>
+                <button type="submit"  className ="button">登録</button>
             </form>
         </div>
     )

@@ -12,7 +12,7 @@ const Post = () => {
     const handleSubmit = (e) => {
       e.preventDefault();
     
-    axios.post('http://http://52.195.43.116/:8080/post/create',
+    axios.post('http://52.195.43.116:8080/post/create',
                postData,
                {
                   headers:{

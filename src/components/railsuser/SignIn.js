@@ -19,7 +19,7 @@ const SignIn = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const userData = {
+    const user= {
       name: data.name,
       email: data.email,
       password: data.password,
@@ -27,16 +27,15 @@ const SignIn = () => {
     };
     axios.post(
       "http://52.195.43.116:8080/signup",
-      userData,
+      {user:user},
       {
         headers: {
-          'Content-Type': 'application/json',
-         
+          'Content-Type': 'application/json', 
         }
       }
     )
-      .then((response) => {
-        console.log(response.status, response.data.token);
+      .then((res) => {
+        console.log(res.status,res.data);
       })
       .catch((error) => {
         console.error(error);

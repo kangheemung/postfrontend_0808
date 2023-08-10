@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { BrowserRouter, Routes, Route, useLocation  } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Modal from './components/Modal';
 import Header from './components/Header';
 import Home from './components/Home';
@@ -17,8 +17,8 @@ function App() {
   const [showModal, setShowModal] = useState(false);
 
   const handleLogin = (data) => {
-    setLoggedInStatus("ログインなう");
-    setUser({ user: data.user });
+    setLoggedInStatus("ログインなう")
+    setUser(data.user )
   };
   
   const handleLogout = () => {
@@ -30,19 +30,20 @@ function App() {
     checkLoginStatus();
   }, []);
 
-  const checkLoginStatus = async () => {
-    try {
-      const response = await axios.get("http://52.195.43.116:3000/logged_in", { withCredentials: true });
-      if (response.data.logged_in && loggedInStatus === "未ログイン") {
-        setLoggedInStatus("ログインなう");
-        setUser(response.data.user);
-      } else if (!response.data.logged_in && loggedInStatus === "ログインなう") {
-        setLoggedInStatus("未ログイン");
-        setUser({});
+  const checkLoginStatus = () => {
+   axios.get("http://52.195.43.116:8080/logged_in", { withCredentials: true })
+   .then(response => {
+    if (response.data.logged_in && loggedInStatus === "未ログイン") {
+      setLoggedInStatus("ログインなう")
+      setUser(response.data.user)
+    } else if (!response.data.logged_in && loggedInStatus === "ログインなう") {
+      setLoggedInStatus("未ログイン")
+      setUser({})
       }
-    } catch (error) {
-      console.log("ログインエラー", error);
-    }
+    })
+    .catch(error => {
+      console.log("ログインエラー", error)
+     })    
   };
 
   function toggleModalHandler() {
@@ -87,5 +88,4 @@ function App() {
     </BrowserRouter>
   );
 }
-
 export default App;

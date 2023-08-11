@@ -9,13 +9,14 @@ export default function Login(props) {
 
         axios.post(
             "http://52.195.43.116:8080/login",
-            {
-                user: {
-                    email: email,
-                    password: password
+            {user:{
+                email: email,
+                password: password
+            }},
+            { headers: {
+                  'Content-Type': 'application/json', 
                 }
-            },
-            { withCredentials: true }
+            },{ withCredentials: true }
         )
         .then(response => {
             if (response.data.logged_in) {
@@ -52,7 +53,7 @@ export default function Login(props) {
                         onChange={event => setPassword(event.target.value)}
                     />
                 </div>
-                <button type="submit" className="button">登録</button>
+                <button type="submit" className="button">ログイン</button>
             </form>
         </div>
     );

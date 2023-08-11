@@ -9,6 +9,7 @@ import Post from './components/Post';
 import Hellow from './components/Hellow';
 import SignIn from './components/railsuser/SignIn';
 import Login from './components/railsuser/Login';
+import Mypage from './components/Mypage';
 import './App.css';
 
 function App() {
@@ -82,6 +83,13 @@ function App() {
             exact path={'/posts/new'}
             element={<Post />}
           />
+      
+          
+        <Route
+          exact path={`/users/${user.id}`}
+          element={<Mypage/>}
+        />
+
         </Routes>
       
     </main>

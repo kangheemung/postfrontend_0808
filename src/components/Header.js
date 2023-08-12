@@ -18,88 +18,103 @@ const Header = (props) => {
       })
       .catch(error => console.log("ログアウトエラー", error));
   };
+  
+  const isLoggedIn = props.loggedInStatus;
+  
+  if(isLoggedIn){
+    return (
+      <nav>
+        <ul style={ulStyle}>
+          <li>
+            <NavLink
+              exact
+              activeStyle={{
+                fontWeight: "bold",
+                color: "red"
+              }}
+              to="/posts/new"
+            >
+              New Post
+            </NavLink>
+          </li>
 
-  return (
-    <nav>
-      <ul style={ulStyle}>
-        <li style={{ flex: '1 0 auto' }}>
-          <NavLink
-            exact
-            activeStyle={{
-              fontWeight: "bold",
-              color: "red"
-            }}
-            to="/"
-          >
-            Top
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            exact
-            activeStyle={{
-              fontWeight: "bold",
-              color: "red"
-            }}
-            to="/signup"
-          >
-            SignIN
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            exact
-            activeStyle={{
-              fontWeight: "bold",
-              color: "red"
-            }}
-            to="/logged_in"
-          >
-            Login
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            exact
-            activeStyle={{
-              fontWeight: "bold",
-              color: "red"
-            }}
-            to="/posts/index"
-          >
-            Postindex--
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            exact
-            activeStyle={{
-              fontWeight: "bold",
-              color: "red"
-            }}
-            to="/posts/new"
-          >
-            New Post
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            exact
-            activeStyle={{
-              fontWeight: "bold",
-              color: "red"
-            }}
-            to="/users/:id"
-          >
-            Mypage
-          </NavLink>
-        </li>
-        <li>
-          <button onClick={handleLogout}>ログアウト</button>    
-        </li>
-      </ul>
-    </nav>
-  );
+          <li>
+            <NavLink
+              exact
+              activeStyle={{
+                fontWeight: "bold",
+                color: "red"
+              }}
+              to="/users/:id"
+            >
+              Mypage
+            </NavLink>
+          </li>
+        
+          <li>
+            <button onClick={handleLogout}>ログアウト</button>    
+          </li>
+        </ul>
+      </nav>
+    );
+  } else {      
+    return(
+      <nav>  
+        <ul style={ulStyle}>
+          <li>
+            <NavLink
+              exact
+              activeStyle={{
+                fontWeight: "bold",
+                color: "red"
+              }}
+              to="/"
+            >
+              Top
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink
+              exact
+              activeStyle={{
+                fontWeight: "bold",
+                color: "red"
+              }}
+              to="/posts/index"
+            >
+              Postindex--
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink
+              exact
+              activeStyle={{
+                fontWeight: "bold",
+                color: "red"
+              }}
+              to="/logged_in"
+            >
+              Login
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              exact
+              activeStyle={{
+                fontWeight: "bold",
+                color: "red"
+              }}
+              to="/signup"
+            >
+              SignIN
+            </NavLink>
+          </li>
+        </ul>
+      </nav>
+    );
+  }
 };
 
 export default Header;

@@ -57,7 +57,8 @@ const Header = (props) => {
         </ul>
       </nav>
     );
-  } else {      
+  }
+   else {      
     return(
       <nav>  
         <ul style={ulStyle}>

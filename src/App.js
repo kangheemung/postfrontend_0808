@@ -54,7 +54,10 @@ function App() {
   return (
     <BrowserRouter>
     <main>
-      <Header/>
+      <Header
+      loggedInStatus={loggedInStatus}
+      handleLogout={handleLogout}
+      />
       <h1>ここはAPPの場所</h1>
       <Hellow />
       

@@ -1,7 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import axios from "axios";
 
 const SignIn = () => {
+  const navigate = useNavigate(); // Add this line to use the useNavigate hook
+
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -34,11 +37,14 @@ const SignIn = () => {
         }
       }
     )
-      .then((res) => {
-        console.log(res.status,res.data);
-      })
+    .then((res) => {
+      console.log(res.status, res.data)
+      navigate(`/users/${res.data.id}`) // Use navigate function to navigate to the desired route
+    })
+    
       .catch((error) => {
         console.error(error);
+        navigate("/");
       });
   };
 

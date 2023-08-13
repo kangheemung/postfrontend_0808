@@ -1,9 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import React, { useState } from 'react';
 import axios from 'axios';
 
 export default function Login(props) {
+
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleSubmit = (event) => {
 
@@ -20,12 +24,13 @@ export default function Login(props) {
         )
         .then(response => {
             if (response.data.logged_in) {
-                props.handleSuccessfulAuthentication(response.data)
-            }
+                props.handleSuccessfulAuthentication(response.data);
+            navigate(`/users/${response.data.id}`)}
         })
         .catch(error => {
             console.log("signin error", error);
-        })
+            navigate("/");
+          });
         event.preventDefault()
     }
 

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Modal from './components/Modal';
 import Header from './components/Header';
 import Home from './components/Home';
 import Dashboard from './components/Dashboard';
@@ -12,62 +11,67 @@ import Login from './components/railsuser/Login';
 import Mypage from './components/Mypage';
 import './App.css';
 
-function App() {
+function App(props) {
   const [loggedInStatus, setLoggedInStatus] = useState('未ログイン');
   const [user, setUser] = useState({});
-  const [showModal, setShowModal] = useState(false);
-
+  //const [token, setToken] = useState();
   const handleLogin = (data) => {
-    setLoggedInStatus("ログインなう")
-    setUser(data.user )
+    setLoggedInStatus("ログインなう");
+    setUser(data.user);
   };
-  
-  const handleLogout = () => {
-    setLoggedInStatus("未ログイン");
-    setUser({});
+  const handleSuccessfulAuthentication = (data) => {
+    props.handleLogin(data);
+    props.history.push("/dashboard");
+}
+
+  const checkLoginStatus = () => {
+    axios.get("http://52.195.43.116/logged_in", { withCredentials: true })
+      .then(response => {
+        if (response.data.logged_in && loggedInStatus === "未ログイン") {
+          setLoggedInStatus("ログインなう");
+          setUser(response.data.user);
+        } else if (!response.data.logged_in && loggedInStatus === "ログインなう") {
+          setLoggedInStatus("未ログイン");
+          setUser({});
+        }
+      })
+      .catch(error => {
+        console.log("ログインエラー", error);
+      });
+  };
+  const handleLogoutClick = () => {
+    axios.delete("http://52.195.43.116:8080/logout", { withCredentials: true })
+      .then(response => {
+        setLoggedInStatus("未ログイン");
+        setUser({});
+      })
+      .catch(error => {
+        console.log("ログアウトエラー", error)
+      });
   };
 
   useEffect(() => {
     checkLoginStatus();
   }, []);
 
-  const checkLoginStatus = () => {
-   axios.get("http://52.195.43.116:8080/logged_in", { withCredentials: true })
-   .then(response => {
-    if (response.data.logged_in && loggedInStatus === "未ログイン") {
-      setLoggedInStatus("ログインなう")
-      setUser(response.data.user)
-    } else if (!response.data.logged_in && loggedInStatus === "ログインなう") {
-      setLoggedInStatus("未ログイン")
-      setUser({})
-      }
-    })
-    .catch(error => {
-      console.log("ログインエラー", error)
-     })    
-  };
-
-  function toggleModalHandler() {
-    setShowModal((isShowing) => !isShowing);
-  }
-
   return (
     <BrowserRouter>
-    <main>
-      <Header
-      loggedInStatus={loggedInStatus}
-      handleLogout={handleLogout}
-      />
-      <h1>ここはAPPの場所</h1>
-      <Hellow />
-      
+      <main>
+        <Header
+          loggedInStatus={loggedInStatus}
+          handleLogoutClick={handleLogoutClick}
+        />
+        <h1>ここはAPPの場所</h1>
+        <Hellow />
+        <h2>ログイン状態: {loggedInStatus}</h2>
         <Routes>
           <Route
             exact path={"/"}
             element={<Home
               handleLogin={handleLogin}
-              handleLogout={handleLogout}
+              handleLogoutClick={handleLogoutClick}
               loggedInStatus={loggedInStatus}
+              handleSuccessfulAuthentication={handleSuccessfulAuthentication}
             />}
           />
           <Route
@@ -76,27 +80,26 @@ function App() {
           />
           <Route
             path="/signup"
-            element={<SignIn />}
+            element={<SignIn handleSuccessfulAuthentication={handleSuccessfulAuthentication} />}
           />
-           <Route
+          <Route
             path="/logged_in"
-            element={<Login />}
+            element={<Login handleSuccessfulAuthentication={handleSuccessfulAuthentication}/>}
           />
           <Route
             exact path={'/posts/new'}
             element={<Post />}
           />
-      
-          
-        <Route
-          exact path={`/users/${user.id}`}
-          element={<Mypage/>}
-        />
 
+          <Route
+            exact path={`/users/:id`}
+            element={<Mypage />}
+          />
         </Routes>
-      
-    </main>
+
+      </main>
     </BrowserRouter>
   );
 }
+
 export default App;

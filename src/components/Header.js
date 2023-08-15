@@ -16,7 +16,7 @@ const Header = (props) => {
   const [isMember, setIsMember] = useState(false);
 
   const checkLoginStatus = () => {
-    axios.get("http://52.195.43.116/logged_in", { withCredentials: true })
+    axios.get("http://52.195.43.116:8080/logged_in", { withCredentials: true })
       .then(response => {
         if (response.data.logged_in) {
           setLoggedInStatus("ログインなう");
@@ -32,7 +32,7 @@ const Header = (props) => {
         console.log("ログインエラー", error);
       });
   };
-  
+
   useEffect(() => {
     checkLoginStatus();
   }, []);
@@ -48,7 +48,7 @@ const Header = (props) => {
   useEffect(() => {
     checkLoginStatus();
   }, [loggedInStatus]);
-  
+
   return (
     <nav>
       <ul style={ulStyle}>
@@ -98,7 +98,7 @@ const Header = (props) => {
               </li>
             ))}
             <li>
-              <button onClick={handleLogout}>ログアウト</button>    
+              <button onClick={handleLogout}>ログアウト</button>
             </li>
           </>
         ) : (

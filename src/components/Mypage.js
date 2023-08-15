@@ -1,37 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
+
 export const Mypage = () => {
-  const [users, setUsers] = useState([]);
-  const [searchName, setSearchName] = useState('');
+  const [user, setUser] = useState(null); // Changing users state to user since you are accessing a single user
   const navigate = useNavigate();
+  const { id } = useParams(); // Access the user ID from the URL parameter
 
   useEffect(() => {
-    axios.get(`http://52.195.43.116:8080/users/:id`)
+    console.log(id); // Add this line to check the value of id
+    axios.get(`http://52.195.43.116:8080/users/${id}`)
       .then(res => {
         console.log(res.data);
-        setUsers(res.data);
+        setUser(res.data);
       })
       .catch(e => {
         console.log(e);
       });
-  }, []);
+  }, [id]);
+  
 
-  const updateISCompleted = (show, user) => {
+  const updateUser = () => {
     const data = { 
       id: user.id,
       name: user.name, 
       email: user.email,
       password: user.password,
-      password_conformation: user.password_conformation
+      password_confirmation: user.password_confirmation // Fixing typo in password_confirmation field name
     };
 
     axios.patch(`http://52.195.43.116:8080/users/${user.id}/edit`, data)
       .then(res => {
-        const updatedUsers = [...users];
-        updatedUsers[show] = { ...updatedUsers[show], is_completed: res.data.is_completed };
-        setUsers(updatedUsers);
+        setUser(res.data); // Update the user state with the response data
       })
       .catch(error => {
         console.log(error);
@@ -41,25 +42,20 @@ export const Mypage = () => {
   return (
     <div>
       <h1>mypage</h1>
-      <table>
-        <tbody>
-          {users.map(user => (
-            <tr key={user.id}>
-              <td>
-                <Link
-                  to={{
-                    pathname: "/users/" + user.id,
-                    state: { id: user.id },
-                  }}
-                >
-                  {user.name}
-                </Link>
-                {user.name}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {user ? (
+        <>
+          <p>
+            <Link to={`/users/${user.id}`}>
+              {user.name}
+            </Link>
+          </p>
+          <p>こんにちは{user.name}様</p>
+          <p>あなたのemailは{user.email}です。</p>
+          <button onClick={updateUser}>Update User</button>
+        </>
+      ) : (
+        <p>Loading...</p>
+      )}
     </div>
   );
 };

@@ -25,7 +25,7 @@ function App(props) {
 }
 
   const checkLoginStatus = () => {
-    axios.get("http://52.195.43.116/logged_in", { withCredentials: true })
+    axios.get("http://52.195.43.116:8080/logged_in", { withCredentials: true })
       .then(response => {
         if (response.data.logged_in && loggedInStatus === "未ログイン") {
           setLoggedInStatus("ログインなう");

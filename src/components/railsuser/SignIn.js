@@ -1,8 +1,10 @@
-import { useNavigate } from "react-router-dom";
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useParams ,useNavigate } from "react-router-dom";
 
 const SignIn = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const [csrfToken, setCsrfToken] = useState('');
   const [data, setData] = useState({
@@ -29,6 +31,7 @@ const SignIn = () => {
         
         const token = response.data.csrfToken;
         setCsrfToken(token);
+
       } catch (error) {
         console.error(error);
       }

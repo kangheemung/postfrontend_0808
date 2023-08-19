@@ -1,30 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams  } from 'react-router-dom';
 import axios from 'axios';
 
 export const Mypage = () => {
   const [user, setUser] = useState(null);
-  const navigate = useNavigate();
-  const { id } = useParams();
   const [csrfToken, setCsrfToken] = useState(null);
-      useEffect(() => {
-        const checkLoginStatus = async () => {
-          try {
-            const response = await axios.get("http://52.195.43.116:8080/csrf-token", {
-              withCredentials: true,
-            });
+  const { id } = useParams();
+  
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        const response = await axios.get("http://52.195.43.116:8080/csrf-token", {
+          withCredentials: true,
+        });
 
-            const token = response.data.csrfToken;
-            setCsrfToken(token);
-          } catch (error) {
-            console.error(error);
-          }
-        };
+        const token = response.data.csrfToken;
+        setCsrfToken(token);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-        checkLoginStatus();
-    
-    // Move the axios.get call here
-    if (id) {
+    checkLoginStatus();
+  }, []);
+
+  useEffect(() => {
+    if (csrfToken && id) {
       axios
         .get(`http://52.195.43.116:8080/users/${id}`, {
           headers: {
@@ -53,7 +54,11 @@ export const Mypage = () => {
     };
 
     axios
-      .patch(`http://52.195.43.116:8080/users/${user.id}/edit`, data)
+      .patch(`http://52.195.43.116:8080/users/${user.id}/edit`, data, {
+        headers: {
+          'X-CSRF-Token': csrfToken
+        }
+      })
       .then(res => {
         setUser(res.data.user);
       })
@@ -65,7 +70,7 @@ export const Mypage = () => {
   return (
     <div>
       <h1>Mypage</h1>
-      {user ? (
+      {user !== null ? (
         <>
           <p>
             <Link to={`/users/${user.id}`}>{user.name}</Link>
@@ -76,7 +81,6 @@ export const Mypage = () => {
         </>
       ) : (
         <>
-          <p>こんにちは{user.name}様</p>
           <p>Loading...</p>
         </>
       )}

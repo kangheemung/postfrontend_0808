@@ -14,31 +14,36 @@ import './App.css';
 function App(props) {
   const [loggedInStatus, setLoggedInStatus] = useState('未ログイン');
   const [user, setUser] = useState({});
-  //const [token, setToken] = useState();
+  const [csrfToken, setCsrfToken] = useState('');
+ 
+  const checkLoginStatus = async () => {
+    try {
+      const response = await axios.get("http://52.195.43.116:8080/csrf-token", {
+        withCredentials: true,
+      });
+  
+      const token = response.data.csrfToken;
+      setCsrfToken(token);
+  
+      // Assuming the server returns a boolean indicating whether the user is logged in or not
+      const isLoggedIn = response.data.loggedIn;
+      setLoggedInStatus(isLoggedIn ? "ログインなう" : "未ログイン");
+  
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleLogin = (data) => {
     setLoggedInStatus("ログインなう");
     setUser(data.user);
   };
-  const handleSuccessfulAuthentication = (data) => {
-    props.handleLogin(data);
-    props.history.push("/dashboard");
-}
 
-  const checkLoginStatus = () => {
-    axios.get("http://52.195.43.116:8080/logged_in", { withCredentials: true })
-      .then(response => {
-        if (response.data.logged_in && loggedInStatus === "未ログイン") {
-          setLoggedInStatus("ログインなう");
-          setUser(response.data.user);
-        } else if (!response.data.logged_in && loggedInStatus === "ログインなう") {
-          setLoggedInStatus("未ログイン");
-          setUser({});
-        }
-      })
-      .catch(error => {
-        console.log("ログインエラー", error);
-      });
-  };
+  const handleSuccessfulAuthentication = (data) => {
+    handleLogin(data);
+    props.history.push("/dashboard");
+  }
+
   const handleLogoutClick = () => {
     axios.delete("http://52.195.43.116:8080/logout", { withCredentials: true })
       .then(response => {

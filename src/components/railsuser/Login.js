@@ -1,15 +1,16 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function Login(props) {
   const navigate = useNavigate();
+  const { id } = useParams();
   const [csrfToken, setCsrfToken] = useState('');
   const [data, setData] = useState({
     email: "",
-    password: "",
+    password: ""
   });
-
+  const [error, setError] = useState('');
   const handleChange = (e) => {
     const value = e.target.value;
     setData({
@@ -24,28 +25,38 @@ export default function Login(props) {
         const response = await axios.get("http://52.195.43.116:8080/csrf-token", {
           withCredentials: true,
         });
-
+        
         const token = response.data.csrfToken;
         setCsrfToken(token);
+        //axios.defaults.headers.common['X-CSRF-Token'] = token;
       } catch (error) {
         console.error(error);
+        if (error.response && error.response.data) {
+          setError(error.response.data.message); // Assuming the error response has a "message" field
+        }
+        
+        navigate("/");
       }
     };
 
     checkLoginStatus();
   }, []);
 
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const user = {
+      const user= {
         email: data.email,
         password: data.password,
       };
-
+      if (!user.email || !user.password) {
+        console.error("Email and password are required");
+        return;
+      }
       const response = await axios.post(
         "http://52.195.43.116:8080/login",
-        { user:user },
+        user,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -54,26 +65,30 @@ export default function Login(props) {
           withCredentials: true
         }
       );
-
-      if (response.data.id) {
-        navigate(`/users/${response.data.id}`);
+      console.log(response.status, response.data);
+      if (response.data && response.data.logged_in) {
+        navigate(`/users/${response.data.user.id}`);
       } else {
-        console.error("User ID not found in response");
+        console.error("User is not logged in");
         navigate("/");
       }
+      setError(''); 
     } catch (error) {
       console.error(error);
 
       if (error.response && error.response.data) {
-        console.log(error.response); // Display the error message from the server
-      }
+        console.log(error.response); 
+        const errorMessage = error.response.data.message;
+        setError(errorMessage);
 
-      navigate("/");
+      }else {
+        navigate("/");
+      }
     }
   };
-
   return (
     <div className="signup_body">
+      {error && <p className="error">{error}</p>}
       <p>ログイン</p>
       <form onSubmit={handleSubmit}>
         <div>
@@ -96,7 +111,8 @@ export default function Login(props) {
             onChange={handleChange}
           />
         </div>
-        <input type="hidden" name="_csrf" value={csrfToken} />
+        <input type="hidden" name="authenticity_token" value={csrfToken} />
+
         <button type="submit" className="button">ログイン</button>
       </form>
     </div>

@@ -88,7 +88,7 @@ function App(props) {
             element={<SignIn handleSuccessfulAuthentication={handleSuccessfulAuthentication} />}
           />
           <Route
-            path="/logged_in"
+            path="/login"
             element={<Login handleSuccessfulAuthentication={handleSuccessfulAuthentication}/>}
           />
           <Route

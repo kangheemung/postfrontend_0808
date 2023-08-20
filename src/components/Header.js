@@ -13,45 +13,53 @@ const ulStyle = {
 const Header = (props) => {
   const [loggedInStatus, setLoggedInStatus] = useState("未ログイン");
   const [user, setUser] = useState({});
-  const [isMember, setIsMember] = useState(false);
   const [csrfToken, setCsrfToken] = useState("");
 
-  const checkLoginStatus = () => {
-    axios
-      .get("http://52.195.43.116:8080/logged_in", { withCredentials: true })
-      .then((response) => {
-        if (response.data.logged_in) {
-          setLoggedInStatus("ログインなう");
-          setIsMember(response.data.is_member);
-          setUser(response.data.user);
-        } else {
-          setLoggedInStatus("未ログイン");
-          setIsMember(false);
-          setUser({});
-        }
-      })
-      .catch((error) => {
-        console.log("ログインエラー", error);
-      });
-  };
-
   useEffect(() => {
-    const fetchCsrfToken = async () => {
+    const checkLoginStatus = async () => {
       try {
         const response = await axios.get(
-          "http://52.195.43.116:8080/csrf-token",
-          { withCredentials: true }
-        );
+          "http://52.195.43.116:8080/logged_in",
+           { 
+             headers: { 'Content-Type': 'application/json',
+                    'X-CSRF-Token': csrfToken,
+                   } ,withCredentials: true 
+                  });
 
-        const token = response.data.csrfToken;
-        setCsrfToken(token);
-      } catch (error) {
-        console.error(error);
+                   if (response.data) {
+                    setLoggedInStatus("ログインなう");
+                    setUser(response.data.user);
+                  } else {
+                    setLoggedInStatus("未ログイン");
+                    setUser({});
+                  }
+          
+                }catch(error)  {
+        console.log("ログインエラー", error);
       }
-    };
+   };
+// Rest of your code...
 
-    fetchCsrfToken();
-  }, []);
+
+  const fetchCsrfToken = async () => {
+    try {
+      const response = await axios.get(
+        "http://52.195.43.116:8080/csrf-token",
+        { withCredentials: true }
+      );
+
+      const token = response.data.csrfToken;
+      setCsrfToken(token);
+      checkLoginStatus();
+    } catch (error) {
+      console.log("ログインエラー", error);
+    }
+  };
+  fetchCsrfToken();
+},[]);
+
+
+// Rest of your code...
 
   const handleLogout = () => {
     axios
@@ -62,16 +70,14 @@ const Header = (props) => {
       .catch((error) => console.log("ログアウトエラー", error));
   };
 
-  useEffect(() => {
-    checkLoginStatus();
-  }, [loggedInStatus]);
+
 
   return (
     <nav>
       <ul style={ulStyle}>
         <li>{csrfToken}</li>
         <li>
-          <Link to="http://52.195.43.116:8080/logged_in">
+          <Link to="/logged_in">
             ログイン状態: {loggedInStatus}
           </Link>
           {loggedInStatus === "ログインなう" && <span>{user.name}</span>}
@@ -157,7 +163,7 @@ const Header = (props) => {
                   fontWeight: "bold",
                   color: "red",
                 }}
-                to="/logged_in"
+                to="/login"
               >
                 Login
               </Link>

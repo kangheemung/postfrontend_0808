@@ -11,6 +11,7 @@ export default function Login(props) {
     password: ""
   });
   const [error, setError] = useState('');
+
   const handleChange = (e) => {
     const value = e.target.value;
     setData({
@@ -31,12 +32,7 @@ export default function Login(props) {
         //axios.defaults.headers.common['X-CSRF-Token'] = token;
       } catch (error) {
         console.error(error);
-        if (error.response && error.response.data) {
-          setError(error.response.data.message); // Assuming the error response has a "message" field
-        }
-        
-        navigate("/");
-      }
+      } 
     };
 
     checkLoginStatus();
@@ -45,29 +41,31 @@ export default function Login(props) {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     try {
-      const user= {
+      const session= {
         email: data.email,
         password: data.password,
       };
-      if (!user.email || !user.password) {
-        console.error("Email and password are required");
-        return;
-      }
+    
       const response = await axios.post(
         "http://52.195.43.116:8080/login",
-        user,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': csrfToken,
-          },
-          withCredentials: true
-        }
+        { 
+          session:session 
+        },
+          {
+            headers: { 'Content-Type': 'application/json',
+                        'X-CSRF-Token': csrfToken,
+                       },
+            withCredentials: true
+          }
       );
+
       console.log(response.status, response.data);
-      if (response.data && response.data.logged_in) {
-        navigate(`/users/${response.data.user.id}`);
+
+      if (response.data.id) {
+       
+        navigate(`/users/${response.data.id}`);
       } else {
         console.error("User is not logged in");
         navigate("/");
@@ -78,11 +76,7 @@ export default function Login(props) {
 
       if (error.response && error.response.data) {
         console.log(error.response); 
-        const errorMessage = error.response.data.message;
-        setError(errorMessage);
-
-      }else {
-        navigate("/");
+      }else { setError("An error occurred while logging in");
       }
     }
   };
@@ -111,7 +105,7 @@ export default function Login(props) {
             onChange={handleChange}
           />
         </div>
-        <input type="hidden" name="authenticity_token" value={csrfToken} />
+        <input type="hidden" name="_csrf" value={csrfToken} />
 
         <button type="submit" className="button">ログイン</button>
       </form>

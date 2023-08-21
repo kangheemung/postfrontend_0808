@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 
 const ulStyle = {
@@ -9,66 +9,44 @@ const ulStyle = {
   background: "#eee",
   margin: 0,
 };
+const LoginStatus = () => {
+  const isLoggedIn = true; // Replace with your logic to determine the login status
 
-const Header = (props) => {
-  const [loggedInStatus, setLoggedInStatus] = useState("未ログイン");
-  const [user, setUser] = useState({});
+  return (
+    <div>
+      <span>ログイン状態: </span>
+      {isLoggedIn ? (
+        <Link to="/logged_in">ログイン済み</Link>
+      ) : (
+        <Link to="/login">未ログイン</Link>
+      )}
+    </div>
+  );
+};
+const Header = ({ user, handleLogoutClick, loggedInStatus }) => {
   const [csrfToken, setCsrfToken] = useState("");
+  const { id } = useParams();
 
   useEffect(() => {
-    const checkLoginStatus = async () => {
+    const fetchCsrfToken = async () => {
       try {
         const response = await axios.get(
-          "http://52.195.43.116:8080/logged_in",
-           { 
-             headers: { 'Content-Type': 'application/json',
-                    'X-CSRF-Token': csrfToken,
-                   } ,withCredentials: true 
-                  });
+          "http://52.195.43.116:8080/csrf-token",
+          {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+          }
+        );
 
-                   if (response.data) {
-                    setLoggedInStatus("ログインなう");
-                    setUser(response.data.user);
-                  } else {
-                    setLoggedInStatus("未ログイン");
-                    setUser({});
-                  }
-          
-                }catch(error)  {
-        console.log("ログインエラー", error);
+        const token = response.data.csrfToken;
+        setCsrfToken(token);
+      } catch (error) {
+        console.log("CSRF Token Error", error);
       }
-   };
-// Rest of your code...
+    };
 
-
-  const fetchCsrfToken = async () => {
-    try {
-      const response = await axios.get(
-        "http://52.195.43.116:8080/csrf-token",
-        { withCredentials: true }
-      );
-
-      const token = response.data.csrfToken;
-      setCsrfToken(token);
-      checkLoginStatus();
-    } catch (error) {
-      console.log("ログインエラー", error);
-    }
-  };
-  fetchCsrfToken();
-},[]);
-
-
-// Rest of your code...
-
-  const handleLogout = () => {
-    axios
-      .delete("http://52.195.43.116:8080/logout", { withCredentials: true })
-      .then((response) => {
-        props.handleLogoutClick();
-      })
-      .catch((error) => console.log("ログアウトエラー", error));
-  };
+    fetchCsrfToken();
+  }, []);
 
 
 
@@ -76,16 +54,10 @@ const Header = (props) => {
     <nav>
       <ul style={ulStyle}>
         <li>{csrfToken}</li>
-        <li>
-          <Link to="/logged_in">
-            ログイン状態: {loggedInStatus}
-          </Link>
-          {loggedInStatus === "ログインなう" && <span>{user.name}</span>}
-        </li>
 
-        {/* Conditional rendering based on login and membership status */}
-        {loggedInStatus === "ログインなう" ? (
+        {loggedInStatus ? (
           <>
+           
             <li>
               <Link
                 activeStyle={{
@@ -114,14 +86,14 @@ const Header = (props) => {
                   fontWeight: "bold",
                   color: "red",
                 }}
-                to={`/users/${user.id}`}
+                to={`/users/${id}`}
               >
                 Mypage
               </Link>
             </li>
             <li>
               <button
-                onClick={handleLogout}
+                onClick={handleLogoutClick}
                 style={{
                   textDecoration: "none",
                   background: "none",
@@ -135,6 +107,7 @@ const Header = (props) => {
           </>
         ) : (
           <>
+            <Link to="/logged_out">ログアウト</Link>
             <li>
               <Link
                 activeStyle={{

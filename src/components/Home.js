@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import SignIn from './railsuser/SignIn';
 import Login from './railsuser/Login';
 import axios from 'axios'
-export default function Home(props) {
+function Home(props) {
     const [token, setToken] = useState();
     const handleSuccessfulAuthentication = (data) => {
         props.handleLogin(data);
@@ -16,11 +16,9 @@ export default function Home(props) {
         <div>
             <h1>Home</h1>
             <h2>ログイン状態: {props.loggedInStatus}</h2>
-
-              
-              
             <SignIn handleSuccessfulAuthentication={handleSuccessfulAuthentication}/>
             <Login handleSuccessfulAuthentication={handleSuccessfulAuthentication}/>
         </div>
     );
 }
+export default  Home;

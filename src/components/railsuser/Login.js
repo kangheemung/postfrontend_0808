@@ -21,65 +21,65 @@ export default function Login(props) {
   };
 
   useEffect(() => {
-    const checkLoginStatus = async () => {
+    const fetchCsrfToken = async () => {
       try {
         const response = await axios.get("http://52.195.43.116:8080/csrf-token", {
           withCredentials: true,
         });
-        
+
         const token = response.data.csrfToken;
         setCsrfToken(token);
-        //axios.defaults.headers.common['X-CSRF-Token'] = token;
       } catch (error) {
         console.error(error);
-      } 
+      }
     };
 
-    checkLoginStatus();
+    fetchCsrfToken();
   }, []);
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+  
     try {
-      const session= {
+      const session = {
         email: data.email,
         password: data.password,
       };
-    
+  
       const response = await axios.post(
         "http://52.195.43.116:8080/login",
         { 
-          session:session 
+          session: session 
         },
-          {
-            headers: { 'Content-Type': 'application/json',
-                        'X-CSRF-Token': csrfToken,
-                       },
-            withCredentials: true
-          }
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrfToken,
+          },
+          withCredentials: true
+        }
       );
-
+  
       console.log(response.status, response.data);
-
+  
       if (response.data.id) {
-       
         navigate(`/users/${response.data.id}`);
       } else {
         console.error("User is not logged in");
         navigate("/");
       }
-      setError(''); 
+      
     } catch (error) {
       console.error(error);
-
+  
       if (error.response && error.response.data) {
         console.log(error.response); 
-      }else { setError("An error occurred while logging in");
+      } else {
+        setError("An error occurred while logging in");
       }
     }
   };
+
   return (
     <div className="signup_body">
       {error && <p className="error">{error}</p>}

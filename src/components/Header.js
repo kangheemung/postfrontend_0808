@@ -10,7 +10,7 @@ const ulStyle = {
   margin: 0,
 };
 
-const Header = ({ user, handleLogoutClick, loggedInStatus }) => {
+const Header = ({ handleLogout, loggedInStatus }) => {
   const [csrfToken, setCsrfToken] = useState("");
   const { id } = useParams();
 
@@ -20,20 +20,29 @@ const Header = ({ user, handleLogoutClick, loggedInStatus }) => {
         const response = await axios.get(
           "http://52.195.43.116:8080/csrf-token",
           {
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRF-Token": csrfToken,
+            },
             withCredentials: true,
           }
         );
-
+  
         const token = response.data.csrfToken;
         setCsrfToken(token);
       } catch (error) {
         console.log("CSRF Token Error", error);
       }
     };
-
+  
     fetchCsrfToken();
-  }, []);
+  }, [csrfToken]);
+  
+
+
+
+  
+
 
 
 
@@ -42,8 +51,60 @@ const Header = ({ user, handleLogoutClick, loggedInStatus }) => {
       <ul style={ulStyle}>
         <li>{csrfToken}</li>
 
-        {loggedInStatus ? (
+        {loggedInStatus === "ログインなう" ? (
           <>
+           <li>Logged In</li>
+            <li>
+              <Link
+                activeStyle={{
+                  fontWeight: "bold",
+                  color: "red",
+                }}
+                to="/"
+              >
+                Top
+              </Link>
+            </li>
+            <li>
+              <Link
+                activeStyle={{
+                  fontWeight: "bold",
+                  color: "red",
+                }}
+                to="/posts/new"
+              >
+                New Post
+              </Link>
+            </li>
+            <li>
+              <Link
+                activeStyle={{
+                  fontWeight: "bold",
+                  color: "red",
+                }}
+                to={`/users/${id}`} 
+              >
+                Mypage
+              </Link>
+            </li>
+            <li>
+              <button
+                onClick={handleLogout}
+                style={{
+                  textDecoration: "none",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                ログアウト
+              </button>
+            </li>
+             
+          </>
+        ) : (
+          <>
+          <li>Logged Out</li> 
              <li>
               <Link
                 activeStyle={{
@@ -87,57 +148,7 @@ const Header = ({ user, handleLogoutClick, loggedInStatus }) => {
               >
                 SignIN
               </Link>
-            </li>
-          </>
-        ) : (
-          <>
-            <Link to="/logged_out">ログアウト</Link>
-            <li>
-              <Link
-                activeStyle={{
-                  fontWeight: "bold",
-                  color: "red",
-                }}
-                to="/"
-              >
-                Top
-              </Link>
-            </li>
-            <li>
-              <Link
-                activeStyle={{
-                  fontWeight: "bold",
-                  color: "red",
-                }}
-                to="/posts/new"
-              >
-                New Post
-              </Link>
-            </li>
-            <li>
-              <Link
-                activeStyle={{
-                  fontWeight: "bold",
-                  color: "red",
-                }}
-                to={`/users/${id}`}
-              >
-                Mypage
-              </Link>
-            </li>
-            <li>
-              <button
-                onClick={handleLogoutClick}
-                style={{
-                  textDecoration: "none",
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                }}
-              >
-                ログアウト
-              </button>
-            </li>
+            </li> 
           </>
         )}
       </ul>

@@ -1,15 +1,18 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function Login(props) {
   const navigate = useNavigate();
-  const { id } = useParams();
+  //const params = useParams();
   const [csrfToken, setCsrfToken] = useState('');
+  
   const [data, setData] = useState({
     email: "",
     password: ""
   });
+  const { email, password } = data;
+  const user = { email, password };
   const [error, setError] = useState('');
 
   const handleChange = (e) => {
@@ -41,15 +44,11 @@ export default function Login(props) {
     e.preventDefault();
   
     try {
-      const session = {
-        email: data.email,
-        password: data.password,
-      };
   
       const response = await axios.post(
         "http://52.195.43.116:8080/login",
         { 
-          session: session 
+          user: user
         },
         {
           headers: {

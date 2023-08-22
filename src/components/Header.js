@@ -9,20 +9,7 @@ const ulStyle = {
   background: "#eee",
   margin: 0,
 };
-const LoginStatus = () => {
-  const isLoggedIn = true; // Replace with your logic to determine the login status
 
-  return (
-    <div>
-      <span>ログイン状態: </span>
-      {isLoggedIn ? (
-        <Link to="/logged_in">ログイン済み</Link>
-      ) : (
-        <Link to="/login">未ログイン</Link>
-      )}
-    </div>
-  );
-};
 const Header = ({ user, handleLogoutClick, loggedInStatus }) => {
   const [csrfToken, setCsrfToken] = useState("");
   const { id } = useParams();
@@ -57,7 +44,54 @@ const Header = ({ user, handleLogoutClick, loggedInStatus }) => {
 
         {loggedInStatus ? (
           <>
-           
+             <li>
+              <Link
+                activeStyle={{
+                  fontWeight: "bold",
+                  color: "red",
+                }}
+                to="/"
+              >
+                Top
+              </Link>
+            </li>
+            <li>
+              <Link
+                activeStyle={{
+                  fontWeight: "bold",
+                  color: "red",
+                }}
+                to="/posts"
+              >
+                Postindex
+              </Link>
+            </li>
+            <li>
+              <Link
+                activeStyle={{
+                  fontWeight: "bold",
+                  color: "red",
+                }}
+                to="/login"
+              >
+                Login
+              </Link>
+            </li>
+            <li>
+              <Link
+                activeStyle={{
+                  fontWeight: "bold",
+                  color: "red",
+                }}
+                to="/signup"
+              >
+                SignIN
+              </Link>
+            </li>
+          </>
+        ) : (
+          <>
+            <Link to="/logged_out">ログアウト</Link>
             <li>
               <Link
                 activeStyle={{
@@ -103,54 +137,6 @@ const Header = ({ user, handleLogoutClick, loggedInStatus }) => {
               >
                 ログアウト
               </button>
-            </li>
-          </>
-        ) : (
-          <>
-            <Link to="/logged_out">ログアウト</Link>
-            <li>
-              <Link
-                activeStyle={{
-                  fontWeight: "bold",
-                  color: "red",
-                }}
-                to="/"
-              >
-                Top
-              </Link>
-            </li>
-            <li>
-              <Link
-                activeStyle={{
-                  fontWeight: "bold",
-                  color: "red",
-                }}
-                to="/posts"
-              >
-                Postindex
-              </Link>
-            </li>
-            <li>
-              <Link
-                activeStyle={{
-                  fontWeight: "bold",
-                  color: "red",
-                }}
-                to="/login"
-              >
-                Login
-              </Link>
-            </li>
-            <li>
-              <Link
-                activeStyle={{
-                  fontWeight: "bold",
-                  color: "red",
-                }}
-                to="/signup"
-              >
-                SignIN
-              </Link>
             </li>
           </>
         )}

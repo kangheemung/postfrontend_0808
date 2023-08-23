@@ -8,7 +8,7 @@ export const Mypage = () => {
   const { id } = useParams();
   
   useEffect(() => {
-    const checkLoginStatus = async () => {
+    const LoginStatus = async () => {
       try {
         const response = await axios.get("http://52.195.43.116:8080/csrf-token", {
           withCredentials: true,
@@ -21,7 +21,7 @@ export const Mypage = () => {
       }
     };
 
-    checkLoginStatus();
+    LoginStatus();
   }, []);
 
   useEffect(() => {

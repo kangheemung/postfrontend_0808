@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import axios from "axios";
 
 const ulStyle = {
   display: "flex",
@@ -11,46 +9,11 @@ const ulStyle = {
 };
 
 const Header = ({ handleLogout, loggedInStatus }) => {
-  const [csrfToken, setCsrfToken] = useState("");
   const { id } = useParams();
-
-  useEffect(() => {
-    const fetchCsrfToken = async () => {
-      try {
-        const response = await axios.get(
-          "http://52.195.43.116:8080/csrf-token",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "X-CSRF-Token": csrfToken,
-            },
-            withCredentials: true,
-          }
-        );
-  
-        const token = response.data.csrfToken;
-        setCsrfToken(token);
-      } catch (error) {
-        console.log("CSRF Token Error", error);
-      }
-    };
-  
-    fetchCsrfToken();
-  }, [csrfToken]);
-  
-
-
-
-  
-
-
-
-
   return (
     <nav>
       <ul style={ulStyle}>
-        <li>{csrfToken}</li>
-
+        
         {loggedInStatus === "ログインなう" ? (
           <>
            <li>Logged In</li>
@@ -102,7 +65,7 @@ const Header = ({ handleLogout, loggedInStatus }) => {
             </li>
              
           </>
-        ) : (
+     ) : (
           <>
           <li>Logged Out</li> 
              <li>
@@ -153,7 +116,6 @@ const Header = ({ handleLogout, loggedInStatus }) => {
         )}
       </ul>
     </nav>
-  );
-};
+  )};
 
 export default Header;

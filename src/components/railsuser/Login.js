@@ -12,7 +12,7 @@ export default function Login(props) {
     password: ""
   });
   const { email, password } = data;
-  const user = { email, password };
+  const session = { email, password };
   const [error, setError] = useState('');
 
   const handleChange = (e) => {
@@ -48,7 +48,7 @@ export default function Login(props) {
       const response = await axios.post(
         "http://52.195.43.116:8080/login",
         { 
-          user: user
+         session
         },
         {
           headers: {

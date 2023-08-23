@@ -1,10 +1,11 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams ,useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const SignIn = () => {
-  const { id } = useParams();
+
+const SignIn = ({ handleSuccessfulAuthentication }) => {
+ 
   const navigate = useNavigate();
   const [csrfToken, setCsrfToken] = useState('');
   const [data, setData] = useState({

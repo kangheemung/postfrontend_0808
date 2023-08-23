@@ -8,15 +8,13 @@ const ulStyle = {
   margin: 0,
 };
 
-const Header = ({ handleLogout, loggedInStatus }) => {
+const Header = ({ handleLogout, loggedInStatus}) => {
   const { id } = useParams();
   return (
     <nav>
       <ul style={ulStyle}>
+      <li>{loggedInStatus ? "Logged In" : "Logged Out"}</li>
         
-        {loggedInStatus === "ログインなう" ? (
-          <>
-           <li>Logged In</li>
             <li>
               <Link
                 activeStyle={{
@@ -28,6 +26,8 @@ const Header = ({ handleLogout, loggedInStatus }) => {
                 Top
               </Link>
             </li>
+            {loggedInStatus ? (  
+              <>   
             <li>
               <Link
                 activeStyle={{
@@ -67,18 +67,6 @@ const Header = ({ handleLogout, loggedInStatus }) => {
           </>
      ) : (
           <>
-          <li>Logged Out</li> 
-             <li>
-              <Link
-                activeStyle={{
-                  fontWeight: "bold",
-                  color: "red",
-                }}
-                to="/"
-              >
-                Top
-              </Link>
-            </li>
             <li>
               <Link
                 activeStyle={{

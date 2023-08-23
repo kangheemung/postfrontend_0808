@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import SignIn from './railsuser/SignIn';
 import Login from './railsuser/Login';
-import axios from 'axios'
+
+
 function Home(props) {
     const [token, setToken] = useState();
     const handleSuccessfulAuthentication = (data) => {

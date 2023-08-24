@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default function Login({ handleSuccessfulAuthentication }) {
+export default function Login() {
   const navigate = useNavigate();
   //const params = useParams();
   const [csrfToken, setCsrfToken] = useState('');
@@ -62,7 +62,7 @@ export default function Login({ handleSuccessfulAuthentication }) {
       console.log(response.status, response.data);
   
       if (response.data.id) {
-        navigate(`/users/${response.data.id}`);
+        navigate(`/users/${response.data.id}`, { state: { csrfToken } });
       } else {
         console.error("User is not logged in");
         navigate("/");

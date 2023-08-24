@@ -12,6 +12,7 @@ import './App.css';
 function App() {
   const [loggedInStatus, setLoggedInStatus] = useState(true);
   const [loginSuccess, setLoginSuccess] = useState(true);
+  
   const [csrfToken, setCsrfToken] = useState("");
   
 
@@ -26,7 +27,7 @@ function App() {
         withCredentials: true,
       })
       .then(response => {
-        if (response.data.logged_in) {
+        if (response.data) {
           setLoggedInStatus(true);
         }
       });
@@ -43,7 +44,7 @@ function App() {
   const handleLogin = (data) => {
     setLoggedInStatus(true);
     setCsrfToken(data.csrf_token);
-    setLoginSuccess(data.logged_in);
+    setLoginSuccess(true);
   };
   
   
@@ -69,8 +70,8 @@ function App() {
             </>
           ) : (
             <>
-              <Route path="/signup" element={<SignIn csrfToken={csrfToken} loggedInStatus={loggedInStatus} handleLogin={handleLogin} />} />
-              <Route path="/login" element={<Login csrfToken={csrfToken} loggedInStatus={loggedInStatus} handleLogin={handleLogin} />} />
+              <Route path="/signup" element={<SignIn csrfToken={csrfToken} loggedInStatus={loggedInStatus} handleLogin={handleLogin} loginSuccess={loginSuccess} />} />
+              <Route path="/login" element={<Login csrfToken={csrfToken} loggedInStatus={loggedInStatus} handleLogin={handleLogin} loginSuccess={loginSuccess}/>} />
             </>
           )}
         </Routes>

@@ -1,10 +1,11 @@
-
+import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 
-const SignIn = ({ handleSuccessfulAuthentication }) => {
+
+
+const SignIn = () => {
  
   const navigate = useNavigate();
   const [csrfToken, setCsrfToken] = useState('');
@@ -14,7 +15,6 @@ const SignIn = ({ handleSuccessfulAuthentication }) => {
     password: "",
     password_confirmation: ""
   });
-
   const handleChange = (e) => {
     const value = e.target.value;
     setData({
@@ -22,25 +22,26 @@ const SignIn = ({ handleSuccessfulAuthentication }) => {
       [e.target.name]: value
     });
   };
+  
 
   useEffect(() => {
-    const checkLoginStatus = async () => {
+    const fetchCsrfToken  = async () => {
       try {
         const response = await axios.get("http://52.195.43.116:8080/csrf-token", {
           withCredentials: true,
         });
         
         const token = response.data.csrfToken;
-        setCsrfToken(token);
+        fetchCsrfToken(token);
 
       } catch (error) {
         console.error(error);
       }
     };
 
-    checkLoginStatus(); 
+    fetchCsrfToken(); 
   }, []);
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -69,7 +70,7 @@ const SignIn = ({ handleSuccessfulAuthentication }) => {
       console.log(response.status, response.data);
 
       if (response.data.id) {
-        navigate(`/users/${response.data.id}`);
+        navigate(`/users/${response.data.id}`, { state: { csrfToken } });
       } else {
         console.error("User ID not found in response");
         navigate("/");

@@ -8,26 +8,27 @@ const ulStyle = {
   margin: 0,
 };
 
-const Header = ({ handleLogout, loggedInStatus}) => {
+const Header = ({ loginSuccess, loggedInStatus, handleLogout  }) => {
   const { id } = useParams();
+
   return (
     <nav>
       <ul style={ulStyle}>
-      <li>{loggedInStatus ? "Logged In" : "Logged Out"}</li>
-        
-            <li>
-              <Link
-                activeStyle={{
-                  fontWeight: "bold",
-                  color: "red",
-                }}
-                to="/"
-              >
-                Top
-              </Link>
-            </li>
-            {loggedInStatus ? (  
-              <>   
+        <li>{loggedInStatus ? "In" : "Out"}</li>
+
+        <li>
+          <Link
+            activeStyle={{
+              fontWeight: "bold",
+              color: "red",
+            }}
+            to="/"
+          >
+            Top
+          </Link>
+        </li>
+        {loggedInStatus ?  (  
+          <>   
             <li>
               <Link
                 activeStyle={{
@@ -63,9 +64,8 @@ const Header = ({ handleLogout, loggedInStatus}) => {
                 ログアウト
               </button>
             </li>
-             
           </>
-     ) : (
+        ) : (
           <>
             <li>
               <Link
@@ -104,6 +104,7 @@ const Header = ({ handleLogout, loggedInStatus}) => {
         )}
       </ul>
     </nav>
-  )};
+  );
+};
 
 export default Header;

@@ -12,10 +12,28 @@ import './App.css';
 function App() {
   const [loggedInStatus, setLoggedInStatus] = useState(true);
   const [loginSuccess, setLoginSuccess] = useState(true);
-  
   const [csrfToken, setCsrfToken] = useState("");
+  const fetchCsrfToken = async () => {
+    try {
+      const response = await axios.get("http://52.195.43.116:8080/csrf-token", {
+        withCredentials: true,
+      });
   
-
+      const token = response.data.csrfToken;
+      setCsrfToken(token);
+    } catch (error) { if (error.response && error.response.status === 401) {
+      // Handle 401 Unauthorized error here
+    } else {
+      console.error(error);
+    }
+      
+    }
+  };
+  
+  useEffect(() => {
+    fetchCsrfToken();
+  }, []);
+  
 
   const checkLoginStatus = useCallback(() => {
     axios
@@ -32,6 +50,7 @@ function App() {
         }
       });
   }, [csrfToken]);
+  
 
   useEffect(() => {
     checkLoginStatus();
@@ -40,11 +59,10 @@ function App() {
   const handleLogout = () => {
     setLoggedInStatus(false);
   };
-
   const handleLogin = (data) => {
     setLoggedInStatus(true);
+    setLoginSuccess(data.status === 'true');
     setCsrfToken(data.csrf_token);
-    setLoginSuccess(true);
   };
   
   
@@ -65,7 +83,7 @@ function App() {
           <Route path="/" element={<Home handleLogin={handleLogin} />} />
           {loggedInStatus && loginSuccess ? (
             <>
-              <Route exact path="/users/:id" element={<Mypage csrfToken={csrfToken} loggedInStatus={loggedInStatus} handleLogin={handleLogin} />} />
+             <Route exact path="/users/:id" element={<Mypage csrfToken={csrfToken} loggedInStatus={loggedInStatus} handleLogin={handleLogin} />} />
               <Route exact path={'/posts/new'} element={<Post />} />
             </>
           ) : (

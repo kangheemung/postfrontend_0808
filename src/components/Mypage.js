@@ -1,17 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, { useState, useEffect ,useRef} from 'react';
+import { Link} from 'react-router-dom';
 import axios from 'axios';
 
-export default function Mypage({ loggedInStatus }) {
+export default function Mypage({ loggedInStatus ,csrfToken, id}) {
   const [user, setUser] = useState(true);
-  const { id } = useParams();
-  const csrfTokenRef = useRef(true);
+  const csrfTokenRef = useRef(csrfToken);
+ 
 
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(`http://52.195.43.116:8080/users/${id}`, {
+          headers: {
+            'Content-Type': 'application/json',
+             'X-CSRF-Token': csrfTokenRef.current,
+          }, 
           withCredentials: true,
         });
         setUser(response.data.user);
@@ -21,7 +25,7 @@ export default function Mypage({ loggedInStatus }) {
     };
   
     fetchUser();
-  }, [id]);
+  }, [id, csrfTokenRef]);
   
 
 
@@ -39,7 +43,8 @@ export default function Mypage({ loggedInStatus }) {
     axios
       .patch(`http://52.195.43.116:8080/users/${user.id}/edit`, data, {
         headers: {
-          'X-CSRF-Token': csrfToken.current
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken,
         }
         
       })

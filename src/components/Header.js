@@ -11,6 +11,7 @@ const ulStyle = {
 const Header = ({ loginSuccess, loggedInStatus, handleLogout  }) => {
   const { id } = useParams();
 
+
   return (
     <nav>
       <ul style={ulStyle}>
@@ -18,10 +19,7 @@ const Header = ({ loginSuccess, loggedInStatus, handleLogout  }) => {
 
         <li>
           <Link
-            activeStyle={{
-              fontWeight: "bold",
-              color: "red",
-            }}
+           
             to="/"
           >
             Top
@@ -31,10 +29,7 @@ const Header = ({ loginSuccess, loggedInStatus, handleLogout  }) => {
           <>   
             <li>
               <Link
-                activeStyle={{
-                  fontWeight: "bold",
-                  color: "red",
-                }}
+                
                 to="/posts/new"
               >
                 New Post
@@ -42,10 +37,7 @@ const Header = ({ loginSuccess, loggedInStatus, handleLogout  }) => {
             </li>
             <li>
               <Link
-                activeStyle={{
-                  fontWeight: "bold",
-                  color: "red",
-                }}
+                
                 to={`/users/${id}`} 
               >
                 Mypage
@@ -69,10 +61,7 @@ const Header = ({ loginSuccess, loggedInStatus, handleLogout  }) => {
           <>
             <li>
               <Link
-                activeStyle={{
-                  fontWeight: "bold",
-                  color: "red",
-                }}
+                
                 to="/posts"
               >
                 Postindex
@@ -80,10 +69,7 @@ const Header = ({ loginSuccess, loggedInStatus, handleLogout  }) => {
             </li>
             <li>
               <Link
-                activeStyle={{
-                  fontWeight: "bold",
-                  color: "red",
-                }}
+                
                 to="/login"
               >
                 Login
@@ -91,10 +77,7 @@ const Header = ({ loginSuccess, loggedInStatus, handleLogout  }) => {
             </li>
             <li>
               <Link
-                activeStyle={{
-                  fontWeight: "bold",
-                  color: "red",
-                }}
+                
                 to="/signup"
               >
                 SignIN

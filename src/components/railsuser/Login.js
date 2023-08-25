@@ -1,12 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
-export default function Login() {
+export default function Login({ csrfToken }) {
   const navigate = useNavigate();
-  //const params = useParams();
-  const [csrfToken, setCsrfToken] = useState('');
-  
   const [data, setData] = useState({
     email: "",
     password: ""
@@ -23,33 +20,13 @@ export default function Login() {
     });
   };
 
-  useEffect(() => {
-    const fetchCsrfToken = async () => {
-      try {
-        const response = await axios.get("http://52.195.43.116:8080/csrf-token", {
-          withCredentials: true,
-        });
-
-        const token = response.data.csrfToken;
-        setCsrfToken(token);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchCsrfToken();
-  }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
-  
       const response = await axios.post(
         "http://52.195.43.116:8080/login",
-        { 
-         session
-        },
+        { session },
         {
           headers: {
             'Content-Type': 'application/json',
@@ -58,19 +35,18 @@ export default function Login() {
           withCredentials: true
         }
       );
-  
+
       console.log(response.status, response.data);
-  
+
       if (response.data.id) {
-        navigate(`/users/${response.data.id}`, { state: { csrfToken } });
+        navigate(`/users/${response.data.id}`);
       } else {
         console.error("User is not logged in");
         navigate("/");
       }
-      
     } catch (error) {
       console.error(error);
-  
+
       if (error.response && error.response.data) {
         console.log(error.response); 
       } else {
@@ -104,8 +80,6 @@ export default function Login() {
             onChange={handleChange}
           />
         </div>
-        <input type="hidden" name="_csrf" value={csrfToken} />
-
         <button type="submit" className="button">ログイン</button>
       </form>
     </div>

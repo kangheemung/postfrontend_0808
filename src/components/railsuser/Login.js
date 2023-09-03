@@ -25,7 +25,7 @@ export default function Login({ csrfToken }) {
 
     try {
       const response = await axios.post(
-        "http://52.195.43.116:8080/login",
+        `http://${process.env.REACR_APP_API_IP}:8080/login`,
         { session },
         {
           headers: {

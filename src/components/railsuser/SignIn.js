@@ -31,7 +31,7 @@ const SignIn = ({ csrfToken }) => {
       };
 
       const response = await axios.post(
-        "http://52.195.43.116:8080/signup",
+        `http://${process.env.REACR_APP_API_IP}:8080/signup`,
         {
           user: user
         },

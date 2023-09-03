@@ -11,7 +11,7 @@ export default function Mypage({ loggedInStatus ,csrfToken, id}) {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`http://52.195.43.116:8080/users/${id}`, {
+        const response = await axios.get(`http://${process.env.REACR_APP_API_IP}:8080/users/${id}`, {
           headers: {
             'Content-Type': 'application/json',
              'X-CSRF-Token': csrfTokenRef.current,

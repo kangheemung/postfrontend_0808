@@ -1,9 +1,11 @@
-import Post from'./components/Post';
+import React from 'react'
+import Post from'./Post';
 function PostList(){
     return(
         <>
+        <p>postindex</p>
         <Post/>
-        <Post/>
+      
         </>
     );
 }

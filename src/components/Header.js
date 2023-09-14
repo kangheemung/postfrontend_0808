@@ -1,4 +1,5 @@
-import { useParams, Link } from "react-router-dom";
+import { Link, useParams} from "react-router-dom";
+import React, { useState } from 'react';
 
 const ulStyle = {
   display: "flex",
@@ -8,40 +9,31 @@ const ulStyle = {
   margin: 0,
 };
 
-const Header = ({ loginSuccess, loggedInStatus, handleLogout  }) => {
+function Header({ loggedInStatus, csrfToken, handleLogout }) {
   const { id } = useParams();
+  const [isLoggedIn] = useState(loggedInStatus);
 
 
   return (
     <nav>
       <ul style={ulStyle}>
-        <li>{loggedInStatus ? "In" : "Out"}</li>
+        {isLoggedIn ? (
+          <p>ログイン状態: ログイン中</p>
+        ) : (
+          <p>ログイン状態: ログアウト中</p>
+        )}
 
         <li>
-          <Link
-           
-            to="/"
-          >
-            Top
-          </Link>
+          <Link to="/">Top</Link>
         </li>
-        {loggedInStatus ?  (  
-          <>   
+
+        {isLoggedIn ? (
+          <>
             <li>
-              <Link
-                
-                to="/posts/new"
-              >
-                New Post
-              </Link>
+              <Link to="/posts/new">New Post</Link>
             </li>
             <li>
-              <Link
-                
-                to={`/users/${id}`} 
-              >
-                Mypage
-              </Link>
+              <Link to={`/users/${id}`}>My Page</Link>
             </li>
             <li>
               <button
@@ -60,29 +52,14 @@ const Header = ({ loginSuccess, loggedInStatus, handleLogout  }) => {
         ) : (
           <>
             <li>
-              <Link
-                
-                to="/posts"
-              >
-                Postindex
-              </Link>
+              <Link to="/posts">Postindex</Link>
             </li>
             <li>
-              <Link
-                
-                to="/login"
-              >
-                Login
-              </Link>
+              <Link to="/login">Login</Link>
             </li>
             <li>
-              <Link
-                
-                to="/signup"
-              >
-                SignIN
-              </Link>
-            </li> 
+              <Link to="/signup">SignIN</Link>
+            </li>
           </>
         )}
       </ul>

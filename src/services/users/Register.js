@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { Navigate } from 'react-router-dom'
 
-export default function Register() {
+export default function Register( setToken) {
   const [userData, setUserData] = useState({
     name: '',
     email: '',
@@ -16,7 +16,7 @@ export default function Register() {
   }
   const handleOnSubmit = async (e) =>{
            e.preventDefault()
-  const response = await fetch('http://18.176.21.52:8080/singup',{
+  const response = await fetch('http://18.179.41.255:8080/signup',{
           method:'POST',
           headers: { 'Content-Type': 'application/json'},
           body: JSON.stringify(userData)
